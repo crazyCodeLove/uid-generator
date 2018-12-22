@@ -26,8 +26,8 @@ import com.baidu.fsg.uid.impl.DefaultUidGenerator;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:uid/default-uid-spring.xml" })
 public class DefaultUidGeneratorTest {
-    private static final int SIZE = 100000; // 10w
-    private static final boolean VERBOSE = true;
+    private static final int SIZE = 10000000; // 1000w
+    private static final boolean VERBOSE = false;//是否打印输出
     private static final int THREADS = Runtime.getRuntime().availableProcessors() << 1;
 
     @Resource
@@ -38,14 +38,15 @@ public class DefaultUidGeneratorTest {
      */
     @Test
     public void testSerialGenerate() {
+        long startTime= System.currentTimeMillis();
         // Generate UID serially
         Set<Long> uidSet = new HashSet<>(SIZE);
         for (int i = 0; i < SIZE; i++) {
             doGenerate(uidSet, i);
         }
-
         // Check UIDs are all unique
         checkUniqueID(uidSet);
+        System.out.println("last time(ms):" + (System.currentTimeMillis() - startTime));
     }
 
     /**
